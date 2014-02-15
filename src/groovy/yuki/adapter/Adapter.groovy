@@ -4,8 +4,8 @@ import yuki.util.Lifecycle
 import yuki.handler.Handler;
 
 public abstract class Adapter implements Lifecycle {
-    final Map options;
-    final Handler handler;
+    public final Map options;
+    public final Handler handler;
 
     public Adapter(final Handler handler, final Map options) {
         this.options = options;
