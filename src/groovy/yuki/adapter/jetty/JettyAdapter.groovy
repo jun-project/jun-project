@@ -19,7 +19,7 @@ public class JettyAdapter extends yuki.adapter.Adapter {
     public final Server server;
 
     public QueuedThreadPool makePool() {
-        final long maxThreads = this.options.get("poolMaxThreads", 50);
+        final int maxThreads = this.options.get("poolMaxThreads", 50);
         final boolean daemonByDefault = this.options.get("poolThreadsDaemon", false);
 
         final QueuedThreadPool pool = new QueuedThreadPool(maxThreads);
@@ -28,8 +28,8 @@ public class JettyAdapter extends yuki.adapter.Adapter {
     }
 
     public ServerConnector makeHttpConnector(final Server server) {
-        final long port = options.get("port", 8080);
-        final long idleTimeout = options.get("idleTimeout", 200000);
+        final int port = options.get("port", 8080);
+        final int idleTimeout = options.get("idleTimeout", 200000);
         final String host = options.get("host", null);
 
         final ServerConnector connector = new ServerConnector(server);
@@ -44,17 +44,17 @@ public class JettyAdapter extends yuki.adapter.Adapter {
         super(handler, options);
 
         final QueuedThreadPool pool = makePool()
-        final Server server = new Server(pool);
+        this.server = new Server(pool);
 
         // Attach http connector
-        final ServerConnector httpConnector = makeHttpConnector(server);
-        //final ServerConnector httpsConnector = makeHttpsConnector(server);
+        final ServerConnector httpConnector = makeHttpConnector(this.server);
+        //final ServerConnector httpsConnector = makeHttpsConnector(this.server);
 
-        server.addConnector(httpConnector);
-        server.addConnector(httpsConnector);
+        this.server.addConnector(httpConnector);
+        //server.addConnector(httpsConnector);
 
         final HandlerWrapper handlerWrapper = new HandlerWrapper(handler);
-        server.setHandler(handlerWrapper);
+        this.server.setHandler(handlerWrapper);
     }
 
     public void start() {
