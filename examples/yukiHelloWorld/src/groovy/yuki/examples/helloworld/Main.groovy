@@ -6,12 +6,13 @@ import yuki.adapter.jetty.JettyAdapter;
 import yuki.core.Request;
 import yuki.core.Response;
 
+import java.io.File;
+
 
 public class Main {
-
     public static class HelloWorldHandler extends AbstractHandler {
         public Response handle(final Request request) {
-            return new Response("Hello World", 200);
+            return new Response("<strong>Hóñá ääåéëþüúí</strong>", "text/html");
         }
     }
 
