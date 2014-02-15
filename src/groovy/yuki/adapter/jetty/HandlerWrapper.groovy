@@ -20,8 +20,18 @@ public class HandlerWrapper extends AbstractHandler {
         this.handler = handler;
     }
 
-    // it should be moved to jetty adapter this logic?
-    public static Request makeRequest(final HttpServletRequest servletRequest) {
+    public Map getHeadersFromServletRequest(final HttpServletRequest servletRequest) {
+        def headerNames = servletRequest.getHeaderNames();
+        def headers = [:];
+
+        headerNames.each { name ->
+            headers[name] = servletRequest.getHeader(name);
+        }
+
+        return headers;
+    }
+
+    public Request makeRequest(final HttpServletRequest servletRequest) {
         final Request req = new Request();
 
         req.serverPort = servletRequest.getServerPort();
@@ -32,12 +42,11 @@ public class HandlerWrapper extends AbstractHandler {
         req.scheme = servletRequest.getScheme();
         req.method = servletRequest.getMethod().toLowerCase();
         req.contentType = servletRequest.getContentType();
-
+        req.encoding = servletRequest.getCharacterEncoding();
+        req.contentLength = servletRequest.getContentLength();
         req.body = servletRequest.getInputStream();
-
-        // PENDING:
-        // ContentLength
-        // CharEncoding
+        req.headers = this.getHeadersFromServletRequest(servletRequest);
+        req.contextPath = servletRequest.getContextPath();
 
         return req;
     }

@@ -1,14 +1,13 @@
-package yuki.middleware;
+package yuki.handler;
 
-import yuki.core.Request;
-import yuki.core.Response;
-
-import yuki.handler.AbstractMiddlewareHandler;
 import java.nio.charset.Charset;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.NameValuePair;
-
 import groovy.transform.InheritConstructors;
+
+import yuki.core.Request;
+import yuki.core.Response;
+import yuki.handler.AbstractMiddlewareHandler;
 
 
 @InheritConstructors

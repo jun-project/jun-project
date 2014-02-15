@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletInputStream;
 
 public class Request extends Expando {
-    long serverPort;
+    int serverPort;
     String serverName;
     String remoteAddress;
     String queryString;
@@ -12,6 +12,9 @@ public class Request extends Expando {
     String scheme;
     String method;
     String contentType;
+    int contentLength;
+    String encoding;
+    String contextPath;
 
     InputStream body;
 }

@@ -1,9 +1,9 @@
-package yuki.middleware;
+package yuki.helpers;
 
 import yuki.handler.Handler;
 import yuki.handler.MiddlewareHandler;
 
-public class Middleware {
+public class MiddlewareHelper {
     public static Handler combine(final Handler handler, MiddlewareHandler... middlewares) {
         Handler finalHandler = handler;
 
