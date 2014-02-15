@@ -19,6 +19,8 @@ public class QueryParamsHandler extends AbstractMiddlewareHandler {
             def rawParams = URLEncodedUtils.parse(request.queryString, Charset.forName("UTF-8"));
             def params = rawParams.collectEntries { [(it.getName()):(it.getValue())]}
             request.queryParams = params;
+        } else {
+            request.queryParams = [:];
         }
 
         return this.handler.handle(request);
