@@ -1,0 +1,14 @@
+apply plugin: "groovy"
+apply plugin: "application"
+
+mainClassName = "jun.examples.helloapp.Main"
+
+dependencies {
+
+    compile project(':jun-app')
+    compile project(':jun-core')
+
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile 'org.eclipse.jetty:jetty-server:9.1.1.v20140108'
+    compile 'org.apache.httpcomponents:httpclient:4.3.2'
+}
