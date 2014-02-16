@@ -4,7 +4,7 @@ apply plugin: "application"
 sourceSets {
     main {
         groovy {
-            srcDirs = ['src/groovy', '../../src/groovy']
+            srcDirs = ['src/groovy', '../../jun-core/src/groovy']
         }
     }
 }
