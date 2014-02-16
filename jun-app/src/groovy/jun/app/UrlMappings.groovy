@@ -20,11 +20,6 @@ class UrlMappings extends AbstractHandler {
         }
 
         this.urlsByName = this.urls.collectEntries { url -> [(url.name): url] }
-
-        println "======== URLS =========";
-        println mappings;
-        println "---";
-        println this.urls;
     }
 
     def matchRequest(request) {
@@ -52,9 +47,7 @@ class UrlMappings extends AbstractHandler {
 
     def handleMatchedRequest(match, request) {
         // Attach current match to request
-        // request.match = march
-        println "MATCH: ${match}"
-        println "REQUEST: ${request}"
+        request.match = match
 
         // Resolve handler
         def handler = this.resolveControllerHandler(match.controller, match.action);
