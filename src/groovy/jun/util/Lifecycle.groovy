@@ -1,4 +1,4 @@
-package yuki.util;
+package jun.util;
 
 public interface Lifecycle {
     public void start();

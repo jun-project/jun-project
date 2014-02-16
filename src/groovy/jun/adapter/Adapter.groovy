@@ -1,7 +1,7 @@
-package yuki.adapter;
+package jun.adapter;
 
-import yuki.util.Lifecycle
-import yuki.handler.Handler;
+import jun.util.Lifecycle
+import jun.handler.Handler;
 
 public abstract class Adapter implements Lifecycle {
     public final Map options;

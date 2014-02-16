@@ -1,11 +1,11 @@
-package yuki.handler;
+package jun.handler;
 
-import yuki.core.Request;
-import yuki.core.Response;
+import jun.core.Request;
+import jun.core.Response;
 
-import yuki.handler.AbstractHandler;
-import yuki.handler.MiddlewareHandler;
-import yuki.handler.Handler;
+import jun.handler.AbstractHandler;
+import jun.handler.MiddlewareHandler;
+import jun.handler.Handler;
 
 public abstract class AbstractMiddlewareHandler extends AbstractHandler implements MiddlewareHandler {
     public Handler handler;

@@ -1,10 +1,9 @@
-yuki
-====
+jun-project: jun-core
+=====================
 
-yuki is a groovy applications library inspired by clojure's ring. It provides
-high abstraction level over servlet api allowing build haigly composable web
-services on top of it.
+junproject is a collection of groovy libraries for build web applications.
+
+**jun-core** provides a high level abstraction over servlet/handler api alowing build hightly
+composable web services (inspired by clojure ring)
 
 WARNING: project in fase of design and api can change drasticaly.
-
-NOTE: the name is a random japonese word and is subject to change in near future.

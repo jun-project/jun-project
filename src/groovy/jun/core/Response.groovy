@@ -1,4 +1,4 @@
-package yuki.core;
+package jun.core;
 
 import java.io.InputStream;
 import java.io.File;

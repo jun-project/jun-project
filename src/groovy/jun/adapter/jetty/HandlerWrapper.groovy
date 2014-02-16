@@ -1,4 +1,4 @@
-package yuki.adapter.jetty;
+package jun.adapter.jetty;
 
 import java.io.OutputStream;
 import java.io.InputStream;
@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request as ServerRequest;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import yuki.handler.Handler;
-import yuki.core.Request;
-import yuki.core.Response;
+import jun.handler.Handler;
+import jun.core.Request;
+import jun.core.Response;
 
 
 public class HandlerWrapper extends AbstractHandler {

@@ -1,8 +1,8 @@
-package yuki.handler;
+package jun.handler;
 
-import yuki.core.Request;
-import yuki.core.Response;
-import yuki.handler.Handler;
+import jun.core.Request;
+import jun.core.Response;
+import jun.handler.Handler;
 
 public interface MiddlewareHandler {
     public Response handle(final Request request);

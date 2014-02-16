@@ -1,4 +1,4 @@
-package yuki.adapter.jetty;
+package jun.adapter.jetty;
 
 import groovy.transform.InheritConstructors;
 
@@ -11,11 +11,11 @@ import org.eclipse.jetty.server.HttpConfiguration;
 
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-import yuki.handler.Handler;
-import yuki.adapter.jetty.HandlerWrapper;
+import jun.handler.Handler;
+import jun.adapter.jetty.HandlerWrapper;
 
 
-public class JettyAdapter extends yuki.adapter.Adapter {
+public class JettyAdapter extends jun.adapter.Adapter {
     public final Server server;
 
     public QueuedThreadPool makePool() {

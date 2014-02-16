@@ -1,14 +1,14 @@
-package yuki.examples.helloworld;
+package jun.examples.helloworld;
 
-import static yuki.helpers.MiddlewareHelper.combine;
+import static jun.helpers.MiddlewareHelper.combine;
 
-import yuki.handler.QueryParamsHandler;
-import yuki.handler.AbstractHandler;
-import yuki.handler.Handler;
+import jun.handler.QueryParamsHandler;
+import jun.handler.AbstractHandler;
+import jun.handler.Handler;
 
-import yuki.adapter.jetty.JettyAdapter;
-import yuki.core.Request;
-import yuki.core.Response;
+import jun.adapter.jetty.JettyAdapter;
+import jun.core.Request;
+import jun.core.Response;
 
 
 public class Main {

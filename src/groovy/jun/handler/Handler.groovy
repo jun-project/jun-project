@@ -1,7 +1,7 @@
-package yuki.handler;
+package jun.handler;
 
-import yuki.core.Request;
-import yuki.core.Response;
+import jun.core.Request;
+import jun.core.Response;
 
 public interface Handler {
     public Response handle(final Request request);

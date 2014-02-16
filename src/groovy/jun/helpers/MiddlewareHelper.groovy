@@ -1,7 +1,7 @@
-package yuki.helpers;
+package jun.helpers;
 
-import yuki.handler.Handler;
-import yuki.handler.MiddlewareHandler;
+import jun.handler.Handler;
+import jun.handler.MiddlewareHandler;
 
 public class MiddlewareHelper {
     public static Handler combine(final Handler handler, MiddlewareHandler... middlewares) {

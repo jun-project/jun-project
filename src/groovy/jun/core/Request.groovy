@@ -1,4 +1,4 @@
-package yuki.core;
+package jun.core;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletInputStream;
