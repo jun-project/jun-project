@@ -1,19 +1,15 @@
 package jun.handler;
 
 import java.nio.charset.Charset;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.NameValuePair;
 import groovy.transform.InheritConstructors;
+import org.apache.http.client.utils.URLEncodedUtils;
 
-import jun.core.Request;
-import jun.core.Response;
 import jun.handler.AbstractMiddlewareHandler;
 
 
 @InheritConstructors
-public class QueryParamsHandler extends AbstractMiddlewareHandler {
-    public Response handle(final Request request) {
-
+class QueryParamsHandler extends AbstractMiddlewareHandler {
+    def handle(request) {
         if (request.queryString) {
             def rawParams = URLEncodedUtils.parse(request.queryString, Charset.forName("UTF-8"));
             def params = rawParams.collectEntries { [(it.getName()):(it.getValue())]}

@@ -20,38 +20,25 @@ public class HandlerWrapper extends AbstractHandler {
         this.handler = handler;
     }
 
-    public Map getHeadersFromServletRequest(final HttpServletRequest servletRequest) {
-        def headerNames = servletRequest.getHeaderNames();
-        def headers = [:];
+    public void copy(InputStream input, OutputStream output, final int bufferSize) {
+        final byte[] buffer = new byte[bufferSize];
 
-        headerNames.each { name ->
-            headers[name] = servletRequest.getHeader(name);
+        while (true) {
+            final int s = input.read(buffer);
+
+            if (s > 0) {
+                output.write(buffer, 0, s);
+            } else {
+                break;
+            }
         }
-
-        return headers;
     }
 
-    public Request makeRequest(final HttpServletRequest servletRequest) {
-        final Request req = new Request();
+    public void handle(String target, ServerRequest serverRequest,
+                       HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        def request = new Request(servletRequest, servletResponse);
+        def response = this.handler.handle(request);
 
-        req.serverPort = servletRequest.getServerPort();
-        req.serverName = servletRequest.getServerName();
-        req.remoteAddress = servletRequest.getRemoteAddr();
-        req.queryString = servletRequest.getQueryString();
-        req.path = servletRequest.getRequestURI();
-        req.scheme = servletRequest.getScheme();
-        req.method = servletRequest.getMethod().toLowerCase();
-        req.contentType = servletRequest.getContentType();
-        req.encoding = servletRequest.getCharacterEncoding();
-        req.contentLength = servletRequest.getContentLength();
-        req.body = servletRequest.getInputStream();
-        req.headers = this.getHeadersFromServletRequest(servletRequest);
-        req.contextPath = servletRequest.getContextPath();
-
-        return req;
-    }
-
-    public void updateServletResponse(final HttpServletResponse servletResponse, final Response response) {
         // Set headers
         response.headers.each { key, val ->
             keylowercase = key.toLowerCase();
@@ -73,35 +60,14 @@ public class HandlerWrapper extends AbstractHandler {
             servletResponse.setCharacterEncoding(response.encoding);
         }
 
-        final InputStream input = response.body;
+        final InputStream input = response.getInputStream();
         final OutputStream output = servletResponse.getOutputStream();
 
         this.copy(input, output, 1024*2);
 
         input.close();
         output.close();
-    }
 
-    public void copy(InputStream input, OutputStream output, final int bufferSize) {
-        final byte[] buffer = new byte[bufferSize];
-
-        while (true) {
-            final int s = input.read(buffer);
-
-            if (s > 0) {
-                output.write(buffer, 0, s);
-            } else {
-                break;
-            }
-        }
-    }
-
-    public void handle(String target, ServerRequest serverRequest,
-                       HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        final Request request = this.makeRequest(servletRequest);
-        final Response response = this.handler.handle(request);
-
-        this.updateServletResponse(servletResponse, response);
         serverRequest.setHandled(true);
     }
 }

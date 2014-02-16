@@ -6,36 +6,40 @@ import java.io.FileInputStream;
 
 
 public class Response extends Expando {
-    public static defaultContentType = "text/html";
+    static defaultContentType = "text/html";
 
-    public Map headers;
-    public int statusCode;
+    def headers;
+    def statusCode;
+    def body;
 
-    public Object body;
-    public String encoding = "UTF-8";
-    public String contentType = "application/octet-stream";
+    def encoding = "UTF-8";
+    def contentType = "application/octet-stream";
 
-    public Response(final Object body, final int statusCode) {
+    def Response(body, statusCode, contentType) {
         this.statusCode = statusCode;
         this.headers = headers;
-        this.encoding = null;
-
-        if (body instanceof String) {
-            this.body = new ByteArrayInputStream(body.getBytes("UTF-8"));
-            this.conte
-        } else if (body instanceof InputStream) {
-            this.body = body;
-        } else if (body instanceof File) {
-            this.body = new FileInputStream(body);
-        }
-    }
-
-    public Response(final Object body) {
-        this(body, 200);
-    }
-
-    public Response(final Object body, final String contentType) {
-        this(body, 200);
         this.contentType = contentType;
+        this.encoding = null;
+        this.body = body;
+    }
+
+    def Response(body, contentType) {
+        this(body, 200, contentType);
+    }
+
+    def Response(body) {
+        this(body, 200);
+    }
+
+    def getInputStream() {
+        if (this.body instanceof String) {
+            return new ByteArrayInputStream(body.getBytes("UTF-8"));
+        } else if (this.body instanceof InputStream) {
+            return this.body;
+        } else if (this.body instanceof File) {
+            return new FileInputStream(body);
+        }
+
+        return this.body;
     }
 }
