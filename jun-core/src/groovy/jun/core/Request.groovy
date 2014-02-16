@@ -4,19 +4,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class Request extends Expando {
-    int serverPort;
-    String serverName;
-    String remoteAddress;
-    String queryString;
-    String path;
-    String scheme;
-    String method;
-    String contentType;
-    int contentLength;
-    String encoding;
-    String contextPath;
-
-    InputStream body;
+    def serverPort;
+    def serverName;
+    def remoteAddress;
+    def queryString;
+    def path;
+    def scheme;
+    def method;
+    def contentType;
+    def contentLength;
+    def encoding;
+    def contextPath;
+    def body;
 
     HttpServletResponse servletResponse;
     HttpServletRequest servletRequest;
@@ -61,6 +60,6 @@ public class Request extends Expando {
         this.contextPath = servletRequest.getContextPath();
 
         this.headers = this.makeHeadersMap(servletRequest);
-        this.cookies = this.makeCookiesMap(servletRequest);
+        //this.cookies = this.makeCookiesMap(servletRequest);
     }
 }
