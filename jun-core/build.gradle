@@ -1,19 +1,4 @@
 apply plugin: "groovy"
-// apply plugin: "application"
-
-sourceSets {
-    main {
-        groovy {
-            srcDirs = ['src/groovy']
-        }
-    }
-}
-
-sourceCompatibility = 1.7
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.2.0'
