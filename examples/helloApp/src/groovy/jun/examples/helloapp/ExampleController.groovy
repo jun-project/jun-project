@@ -4,14 +4,14 @@ import jun.core.Response;
 
 class ExampleController extends jun.controller.Controller {
     def home(request) {
-        return new Response("Home");
+        return "Home"
     }
 
     def fooList(request) {
-        return new Response("Foo List");
+        return "Foo List";
     }
 
     def fooDetail(request) {
-        return new Response("Foo Detail");
+        return "Foo Detail";
     }
 }
