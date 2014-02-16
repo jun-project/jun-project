@@ -13,7 +13,7 @@ class Application extends AbstractHandler {
     def initialized = false;
     def applicationName = "jun-app";
 
-    def urlDispatchHandler;
+    def urlMappingsHandler;
     def mainHandler;
 
     // Main Constructor
@@ -22,18 +22,18 @@ class Application extends AbstractHandler {
     }
 
     // Configuration
-    def setUrlDispatcher(dispatcher) {
-        this.urlDispatchHandler = dispatcher;
+    def setUrlMappings(mappingsHandler) {
+        this.urlMappingsHandler = mappingsHandler;
     }
 
     def makeHandler() {
-        if (!this.urlDispatchHandler) {
+        if (!this.urlMappingsHandler) {
             throw RuntimeException("Can not start app if url dispatcher is not specified.");
         }
 
         // TODO: add more default middlewares when them
         // are implemented on jun-core module.
-        return combine(this.urlDispatchHandler,
+        return combine(this.urlMappingsHandler,
                        new QueryParamsHandler());
     }
 
@@ -53,7 +53,7 @@ class Application extends AbstractHandler {
 
     def handle(request) {
         if (!this.initialized) {
-            this.initialze();
+            this.initialize();
             this.initialized = true;
         }
 

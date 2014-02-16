@@ -28,7 +28,7 @@ public class Response {
     }
 
     def Response(body) {
-        this(body, 200);
+        this(body, 200, "text/html");
     }
 
     def getInputStream() {
