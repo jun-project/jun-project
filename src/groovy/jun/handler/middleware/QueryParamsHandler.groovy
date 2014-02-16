@@ -1,13 +1,12 @@
-package jun.handler;
+package jun.handler.middleware;
 
 import java.nio.charset.Charset;
 import groovy.transform.InheritConstructors;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import jun.handler.AbstractMiddlewareHandler;
+import jun.handler.middleware.AbstractMiddlewareHandler;
 
 
-@InheritConstructors
 class QueryParamsHandler extends AbstractMiddlewareHandler {
     def handle(request) {
         if (request.queryString) {

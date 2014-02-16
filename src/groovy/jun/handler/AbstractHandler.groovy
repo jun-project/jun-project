@@ -5,5 +5,5 @@ import jun.core.Response;
 import jun.handler.Handler;
 
 abstract class AbstractHandler implements Handler {
-    abstract handle(request);
+    abstract def handle(request);
 }

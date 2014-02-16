@@ -10,8 +10,6 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import jun.handler.Handler;
 import jun.core.Request;
-import jun.core.Response;
-
 
 public class HandlerWrapper extends AbstractHandler {
     public final Handler handler;

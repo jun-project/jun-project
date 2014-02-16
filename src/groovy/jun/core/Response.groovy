@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 
-public class Response extends Expando {
+public class Response {
     static defaultContentType = "text/html";
 
     def headers;

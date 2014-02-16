@@ -3,7 +3,6 @@ package jun.core;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class Request extends Expando {
     int serverPort;
     String serverName;
@@ -47,7 +46,7 @@ public class Request extends Expando {
         return cookiesMap;
     }
 
-    def initializeWithServletObjects(servletRequest, servletResponse) {
+    def initialize(servletRequest, servletResponse) {
         this.serverPort = servletRequest.getServerPort();
         this.serverName = servletRequest.getServerName();
         this.remoteAddress = servletRequest.getRemoteAddr();

@@ -9,7 +9,7 @@ sourceSets {
     }
 }
 
-mainClassName = "yuki.examples.helloworld.Main"
+mainClassName = "jun.examples.helloworld.Main"
 
 sourceCompatibility = 1.7
 
