@@ -34,15 +34,9 @@ class UrlMappings extends AbstractHandler {
     // TODO: pending optimize controller initialization
     // TODO: pending optimize new handler initialization
     def resolveControllerHandler(controllerPath, actionName) {
-         def klass = Class.forName(controllerPath)
-         def klassConstructor = klass.getConstructor();
-
-         return new Handler() {
-             def handle(request) {
-                 def instance = klassConstructor.newInstance();
-                 return instance."$actionName"(request);
-             }
-         }
+        def klass = Class.forName(controllerPath);
+        def klassConstructor = klass.getConstructor();
+        return klassConstructor.newInstance();
     }
 
     def handleMatchedRequest(match, request) {
