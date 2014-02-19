@@ -6,17 +6,18 @@ import org.apache.http.client.utils.URLEncodedUtils;
 
 import jun.handler.middleware.AbstractMiddlewareHandler;
 
+import jun.Request;
+import jun.Response;
 
 class QueryParamsHandler extends AbstractMiddlewareHandler {
-    def handle(request) {
+    public Response handle(final Request request) {
+        def queryParams = [:];
+
         if (request.queryString) {
             def rawParams = URLEncodedUtils.parse(request.queryString, Charset.forName("UTF-8"));
-            def params = rawParams.collectEntries { [(it.getName()):(it.getValue())]}
-            request.queryParams = params;
-        } else {
-            request.queryParams = [:];
+            queryParams = rawParams.collectEntries { [(it.getName()):(it.getValue())]}
         }
 
-        return this.handler.handle(request);
+        return this.handler.handle(request.assoc([queryParams:queryParams]));
     }
 }

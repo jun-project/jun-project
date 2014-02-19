@@ -6,13 +6,14 @@ import java.util.regex.Matcher;
 import jun.handler.Handler;
 import jun.handler.AbstractHandler;
 
-import jun.core.Response;
+import jun.Request;
+import jun.Response;
 
 class UrlMappings extends AbstractHandler {
-    def urls;
-    def urlsByName;
+    final List urls;
+    final Map urlsByName;
 
-    def UrlMappings(mappings) {
+    public UrlMappings(final List mappings) {
         this.urls = mappings.collect { url ->
             def urlmap = url.clone();
             urlmap.pattern = Pattern.compile(url.path.replaceAll(/:[^\\/]+/, '[^\\/]+'))
@@ -22,7 +23,7 @@ class UrlMappings extends AbstractHandler {
         this.urlsByName = this.urls.collectEntries { url -> [(url.name): url] }
     }
 
-    def matchRequest(request) {
+    public Map matchRequest(final Request request) {
         def match = this.urls.find { urlmap ->
             def matcher = urlmap.pattern.matcher(request.path);
             return matcher.matches();
@@ -31,30 +32,23 @@ class UrlMappings extends AbstractHandler {
         return match;
     }
 
-    // TODO: pending optimize controller initialization
-    // TODO: pending optimize new handler initialization
-    def resolveControllerHandler(controllerPath, actionName) {
+    public Handler resolveControllerHandler(final String controllerPath) {
         def klass = Class.forName(controllerPath);
         def klassConstructor = klass.getConstructor();
         return klassConstructor.newInstance();
     }
 
-    def handleMatchedRequest(match, request) {
-        // Attach current match to request
-        request.match = match
-
-        // Resolve handler
-        def handler = this.resolveControllerHandler(match.controller, match.action);
-
-        return handler.handle(request);
+    public Response handleMatchedRequest(final Map match, final Request request) {
+        Handler handler = this.resolveControllerHandler(match.controller);
+        return handler.handle(request.assoc("match", match));
     }
 
-    def handleUnmatchedRequest(request) {
+    public Response handleUnmatchedRequest(final Request request) {
         return new Response("No url matched", 500, "text/plain");
     }
 
-    def handle(request) {
-        def match = this.matchRequest(request);
+    public Response handle(final Request request) {
+        final Map match = this.matchRequest(request);
         if (match) {
             return this.handleMatchedRequest(match, request);
         } else {

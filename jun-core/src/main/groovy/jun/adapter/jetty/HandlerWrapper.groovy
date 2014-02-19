@@ -9,7 +9,7 @@ import org.eclipse.jetty.server.Request as ServerRequest;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import jun.handler.Handler;
-import jun.core.Request;
+import jun.Request;
 
 public class HandlerWrapper extends AbstractHandler {
     public final Handler handler;
@@ -32,33 +32,57 @@ public class HandlerWrapper extends AbstractHandler {
         }
     }
 
+    public Request makeRequest(servletRequest, servletResponse) {
+        return new Request([serverPort: servletRequest.getServerPort(),
+                            serverName: servletRequest.getServerName(),
+                            remoteAddress: servletRequest.getRemoteAddr(),
+                            queryString: servletRequest.getQueryString(),
+                            path: servletRequest.getRequestURI(),
+                            scheme: servletRequest.getScheme(),
+                            method: servletRequest.getMethod().toLowerCase(),
+                            contentType: servletRequest.getContentType(),
+                            encoding: servletRequest.getCharacterEncoding(),
+                            contentLength: servletRequest.getContentLength(),
+                            body: servletRequest.getInputStream(),
+                            contextPath: servletRequest.getContextPath(),
+                            servletRequest: servletRequest,
+                            servletResponse: servletResponse]);
+    }
+
+    // FIXME: At this momment only supports String body
+    public InputStream makeInputStreamFromBody(final String body) {
+        return new ByteArrayInputStream(body.getBytes("UTF-8"));
+    }
+
     public void handle(String target, ServerRequest serverRequest,
                        HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        def request = new Request(servletRequest, servletResponse);
+        def request = this.makeRequest(servletRequest, servletResponse);
         def response = this.handler.handle(request);
 
-        // Set headers
-        response.headers.each { key, val ->
-            keylowercase = key.toLowerCase();
-            if (keylowercase != "content-type") {
-                if (val instanceof List) {
-                    val.each { servletResponse.addHeader(key, it); }
-                } else {
-                    servletResponse.setHeader(key, val);
+        if (response.hasKey("headers")) {
+            // Set headers
+            response.headers.each { key, val ->
+                def keylowercase = key.toLowerCase();
+                if (keylowercase != "content-type") {
+                    if (val instanceof List) {
+                        val.each { servletResponse.addHeader(key, it.toString()); }
+                    } else {
+                        servletResponse.setHeader(key, val.toString());
+                    }
                 }
             }
         }
 
         // Set status code
-        servletResponse.setStatus(response.statusCode);
+        servletResponse.setStatus(response.status);
         servletResponse.setContentType(response.contentType);
 
         // Set encoding if response has not null encoding value
-        if (response.encoding) {
+        if (response.hasKey("encoding")) {
             servletResponse.setCharacterEncoding(response.encoding);
         }
 
-        final InputStream input = response.getInputStream();
+        final InputStream input = this.makeInputStreamFromBody(response.body);
         final OutputStream output = servletResponse.getOutputStream();
 
         this.copy(input, output, 1024*2);

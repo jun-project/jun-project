@@ -6,12 +6,15 @@ import jun.handler.middleware.QueryParamsHandler;
 import jun.handler.AbstractHandler;
 
 import jun.adapter.jetty.JettyAdapter;
-import jun.core.Response;
+
+import jun.Request;
+import jun.Response;
 
 class Main {
     static class HelloWorldHandler extends AbstractHandler {
-        def handle(request) {
-            return new Response("<strong>Hóñá ääåéëþüúí</strong>", "text/html");
+        public Response handle(final Request request) {
+            def response = new Response("<strong>Hóñá ääåéëþüúí</strong>")
+            return response.withHeaders(["X-KK": 22]);
         }
     }
 

@@ -1,13 +1,14 @@
 package jun.controller;
 
 import jun.handler.AbstractHandler
-import jun.core.Response;
 
-abstract class Controller {
-    def resolveTo = null;
-    def contentType = "text/html"
+import jun.Request;
+import jun.Response;
 
-    def handle(request) {
+abstract class Controller extends AbstractHandler {
+    def contentType = "text/html";
+
+    public Response handle(final Request request) {
         def match = request.match;
         def responseCandidate = this."${match.action}"(request);
 

@@ -1,17 +1,19 @@
 package jun.examples.helloapp;
 
-import jun.core.Response;
+import jun.Request;
+import jun.controller.Controller;
 
-class ExampleController extends jun.controller.Controller {
-    def home(request) {
-        return "Home"
+
+class ExampleController extends Controller {
+    public String home(final Request request) {
+        return "Home";
     }
 
-    def fooList(request) {
+    public String fooList(final Request request) {
         return "Foo List";
     }
 
-    def fooDetail(request) {
+    public String fooDetail(final Request request) {
         return "Foo Detail";
     }
 }
