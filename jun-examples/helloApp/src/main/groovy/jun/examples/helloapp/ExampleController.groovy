@@ -1,19 +1,18 @@
 package jun.examples.helloapp;
 
-import jun.Request;
 import jun.controller.Controller;
 
 
 class ExampleController extends Controller {
-    public String home(final Request request) {
+    public String home(final Map request) {
         return "Home";
     }
 
-    public String fooList(final Request request) {
+    public String fooList(final Map request) {
         return "Foo List";
     }
 
-    public String fooDetail(final Request request) {
+    public String fooDetail(final Map request) {
         return "Foo Detail";
     }
 }

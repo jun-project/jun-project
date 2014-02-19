@@ -7,14 +7,14 @@ import jun.handler.AbstractHandler;
 
 import jun.adapter.jetty.JettyAdapter;
 
-import jun.Request;
-import jun.Response;
 
 class Main {
     static class HelloWorldHandler extends AbstractHandler {
-        public Response handle(final Request request) {
-            def response = new Response("<strong>Hóñá ääåéëþüúí</strong>")
-            return response.withHeaders(["X-KK": 22]);
+        public Map handle(final Map request) {
+            return [body: "<strong>Hóñá ääåéëþüúí</strong>",
+                    status: 200,
+                    contentType: "text/html",
+                    headers: ["X-KK": "2"]];
         }
     }
 

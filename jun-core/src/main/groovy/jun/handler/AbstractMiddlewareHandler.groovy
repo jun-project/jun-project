@@ -1,4 +1,4 @@
-package jun.handler.middleware;
+package jun.handler;
 
 import jun.handler.AbstractHandler;
 import jun.handler.MiddlewareHandler;
@@ -6,15 +6,15 @@ import jun.handler.Handler;
 
 
 abstract class AbstractMiddlewareHandler extends AbstractHandler implements MiddlewareHandler {
-    Handler handler;
+    public Handler handler;
 
-    def AbstractMiddlewareHandler() {}
+    public AbstractMiddlewareHandler() {}
 
-    def AbstractMiddlewareHandler(Handler handler) {
+    public AbstractMiddlewareHandler(final Handler handler) {
         this.setHandler(handler);
     }
 
-    void setHandler(Handler handler) {
+    void setHandler(final Handler handler) {
         this.handler = handler;
     }
 }

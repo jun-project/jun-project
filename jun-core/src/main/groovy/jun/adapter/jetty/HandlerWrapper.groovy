@@ -1,7 +1,10 @@
 package jun.adapter.jetty;
 
+import groovy.transform.CompileStatic;
+
 import java.io.OutputStream;
 import java.io.InputStream;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,7 +12,6 @@ import org.eclipse.jetty.server.Request as ServerRequest;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import jun.handler.Handler;
-import jun.Request;
 
 public class HandlerWrapper extends AbstractHandler {
     public final Handler handler;
@@ -18,6 +20,7 @@ public class HandlerWrapper extends AbstractHandler {
         this.handler = handler;
     }
 
+    @CompileStatic
     public void copy(InputStream input, OutputStream output, final int bufferSize) {
         final byte[] buffer = new byte[bufferSize];
 
@@ -32,54 +35,71 @@ public class HandlerWrapper extends AbstractHandler {
         }
     }
 
-    public Request makeRequest(servletRequest, servletResponse) {
-        return new Request([serverPort: servletRequest.getServerPort(),
-                            serverName: servletRequest.getServerName(),
-                            remoteAddress: servletRequest.getRemoteAddr(),
-                            queryString: servletRequest.getQueryString(),
-                            path: servletRequest.getRequestURI(),
-                            scheme: servletRequest.getScheme(),
-                            method: servletRequest.getMethod().toLowerCase(),
-                            contentType: servletRequest.getContentType(),
-                            encoding: servletRequest.getCharacterEncoding(),
-                            contentLength: servletRequest.getContentLength(),
-                            body: servletRequest.getInputStream(),
-                            contextPath: servletRequest.getContextPath(),
-                            servletRequest: servletRequest,
-                            servletResponse: servletResponse]);
+    @CompileStatic
+    public Map makeHeadersMap(final HttpServletRequest servletRequest) {
+        final Enumeration<String> headerNames = servletRequest.getHeaderNames();
+        final Map headers = [:];
+
+        headerNames.each { String name ->
+            headers[name] = servletRequest.getHeader(name);
+        }
+
+        return headers.asImmutable();
+
+    }
+
+    public Map makeRequest(servletRequest, servletResponse) {
+        return [serverPort: servletRequest.getServerPort(),
+                serverName: servletRequest.getServerName(),
+                remoteAddress: servletRequest.getRemoteAddr(),
+                queryString: servletRequest.getQueryString(),
+                path: servletRequest.getRequestURI(),
+                scheme: servletRequest.getScheme(),
+                method: servletRequest.getMethod().toLowerCase(),
+                contentType: servletRequest.getContentType(),
+                encoding: servletRequest.getCharacterEncoding(),
+                contentLength: servletRequest.getContentLength(),
+                body: servletRequest.getInputStream(),
+                contextPath: servletRequest.getContextPath(),
+                headers: this.makeHeadersMap(servletRequest),
+                servletRequest: servletRequest,
+                servletResponse: servletResponse];
     }
 
     // FIXME: At this momment only supports String body
-    public InputStream makeInputStreamFromBody(final String body) {
-        return new ByteArrayInputStream(body.getBytes("UTF-8"));
+
+    @CompileStatic
+    public InputStream makeInputStreamFromBody(final Object body) {
+        if (body instanceof String) {
+            final String bodyStr = (String) body;
+            return new ByteArrayInputStream(bodyStr.getBytes("UTF-8"));
+        }
     }
 
+    @CompileStatic
     public void handle(String target, ServerRequest serverRequest,
                        HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        def request = this.makeRequest(servletRequest, servletResponse);
-        def response = this.handler.handle(request);
+        final Map request = this.makeRequest(servletRequest, servletResponse);
+        final Map response = this.handler.handle(request);
 
-        if (response.hasKey("headers")) {
-            // Set headers
-            response.headers.each { key, val ->
-                def keylowercase = key.toLowerCase();
-                if (keylowercase != "content-type") {
-                    if (val instanceof List) {
-                        val.each { servletResponse.addHeader(key, it.toString()); }
-                    } else {
-                        servletResponse.setHeader(key, val.toString());
-                    }
+        if (response.headers) {
+            response.headers.each { Map.Entry entry ->
+                final String key = (String) entry.getKey();
+                final String value = (String) entry.getValue();
+
+                if (key.toLowerCase() != "content-type") {
+                    servletResponse.setHeader(key, value);
                 }
             }
         }
 
         // Set status code
-        servletResponse.setStatus(response.status);
-        servletResponse.setContentType(response.contentType);
+        servletResponse.setStatus((Integer) response.status);
+        servletResponse.setContentType((String) response.contentType);
 
         // Set encoding if response has not null encoding value
-        if (response.hasKey("encoding")) {
-            servletResponse.setCharacterEncoding(response.encoding);
+        if (response.encoding) {
+            servletResponse.setCharacterEncoding((String) response.encoding);
         }
 
         final InputStream input = this.makeInputStreamFromBody(response.body);

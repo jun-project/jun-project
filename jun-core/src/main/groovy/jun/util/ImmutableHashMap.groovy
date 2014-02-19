@@ -61,6 +61,10 @@ class ImmutableHashMap {
     public List keys() {
         return new ArrayList(this.internmap.keySet());
     }
+
+    public String toString() {
+        return this.internmap.toString();
+    }
 }
 
 

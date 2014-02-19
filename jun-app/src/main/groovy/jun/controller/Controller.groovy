@@ -1,20 +1,19 @@
 package jun.controller;
 
-import jun.handler.AbstractHandler
+import static jun.helpers.ResponseHelper.response;
 
-import jun.Request;
-import jun.Response;
+import jun.handler.AbstractHandler
 
 abstract class Controller extends AbstractHandler {
     def contentType = "text/html";
 
-    public Response handle(final Request request) {
-        def match = request.match;
+    public Map handle(final Map request) {
+        final Map match = request.match;
         def responseCandidate = this."${match.action}"(request);
 
         if (responseCandidate instanceof String) {
-            return new Response(responseCandidate, 200, contentType);
-        } else if (responseCandidate instanceof Response) {
+            return response(responseCandidate, 200, contentType);
+        } else if (responseCandidate instanceof Map) {
             return responseCandidate;
         } else {
             throw RuntimeException("Temporary not supported response");

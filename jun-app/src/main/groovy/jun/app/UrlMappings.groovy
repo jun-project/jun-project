@@ -1,13 +1,12 @@
 package jun.app;
 
+import static jun.helpers.ResponseHelper.response;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 import jun.handler.Handler;
 import jun.handler.AbstractHandler;
-
-import jun.Request;
-import jun.Response;
 
 class UrlMappings extends AbstractHandler {
     final List urls;
@@ -23,7 +22,7 @@ class UrlMappings extends AbstractHandler {
         this.urlsByName = this.urls.collectEntries { url -> [(url.name): url] }
     }
 
-    public Map matchRequest(final Request request) {
+    public Map matchRequest(final Map request) {
         def match = this.urls.find { urlmap ->
             def matcher = urlmap.pattern.matcher(request.path);
             return matcher.matches();
@@ -38,16 +37,16 @@ class UrlMappings extends AbstractHandler {
         return klassConstructor.newInstance();
     }
 
-    public Response handleMatchedRequest(final Map match, final Request request) {
+    public Map handleMatchedRequest(final Map match, final Map request) {
         Handler handler = this.resolveControllerHandler(match.controller);
-        return handler.handle(request.assoc("match", match));
+        return handler.handle(request.plus([match:match]).asImmutable());
     }
 
-    public Response handleUnmatchedRequest(final Request request) {
-        return new Response("No url matched", 500, "text/plain");
+    public Map handleUnmatchedRequest(final Map request) {
+        return response("No url matched", 500, "text/plain");
     }
 
-    public Response handle(final Request request) {
+    public Map handle(final Map request) {
         final Map match = this.matchRequest(request);
         if (match) {
             return this.handleMatchedRequest(match, request);

@@ -3,12 +3,8 @@ package jun.app;
 import static jun.helpers.MiddlewareHelper.combine;
 
 import jun.handler.middleware.QueryParamsHandler;
-import jun.handler.middleware.HeadersHandler;
 import jun.handler.AbstractHandler;
 import jun.handler.Handler;
-
-import jun.Request;
-import jun.Response;
 
 
 class Application extends AbstractHandler {
@@ -16,11 +12,10 @@ class Application extends AbstractHandler {
 
     public Application(final Handler handler) {
         this.handler = combine(handler,
-                               new QueryParamsHandler(),
-                               new HeadersHandler());
+                               new QueryParamsHandler());
     }
 
-    public Response handle(final Request request) {
+    public Map handle(final Map request) {
         return this.handler.handle(request);
     }
 }

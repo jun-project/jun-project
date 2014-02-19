@@ -1,23 +1,23 @@
 package jun.handler.middleware;
 
+import groovy.transform.CompileStatic;
+
 import java.nio.charset.Charset;
 import groovy.transform.InheritConstructors;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import jun.handler.middleware.AbstractMiddlewareHandler;
-
-import jun.Request;
-import jun.Response;
+import jun.handler.AbstractMiddlewareHandler;
 
 class QueryParamsHandler extends AbstractMiddlewareHandler {
-    public Response handle(final Request request) {
-        def queryParams = [:];
+    public Map handle(final Map request) {
+        Map queryParams = [:];
 
         if (request.queryString) {
-            def rawParams = URLEncodedUtils.parse(request.queryString, Charset.forName("UTF-8"));
+            final Map rawParams = URLEncodedUtils.parse(request.queryString, Charset.forName("UTF-8"));
             queryParams = rawParams.collectEntries { [(it.getName()):(it.getValue())]}
-        }
+        } 
 
-        return this.handler.handle(request.assoc([queryParams:queryParams]));
+        final Map req = request.plus([queryParams:queryParams]);
+        return this.handler.handle(req.asImmutable());
     }
 }
