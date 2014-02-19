@@ -1,11 +1,8 @@
 package jun.handler;
 
-import jun.core.Request;
-import jun.core.Response;
+import jun.Request;
+import jun.Response;
 
-//public interface Handler<A extends Request,B extends Response> {
-//    public B handle(A request);
-//}
-public interface Handler<A extends Object,B extends Object> {
+public interface Handler<A extends Request,B extends Response> {
     public B handle(A request);
 }

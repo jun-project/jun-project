@@ -7,4 +7,5 @@ dependencies {
 
     // Used for parsing data
     compile 'org.apache.httpcomponents:httpclient:4.3.2'
+    compile 'org.pcollections:pcollections:2.1.2'
 }

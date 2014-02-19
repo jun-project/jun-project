@@ -13,8 +13,8 @@ class Main {
     ];
 
     public static void main(String[] args) {
-        def app = new Application("exampleApp");
-        app.setUrlMappings(new UrlMappings(mappings));
+        def urlMappings = new UrlMappings(mappings);
+        def app = new Application(urlMappings);
 
         def server = new JettyAdapter(app, [port: 8080]);
         server.start();
