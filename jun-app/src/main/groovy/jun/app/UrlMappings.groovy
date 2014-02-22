@@ -37,6 +37,10 @@ class UrlMappings extends AbstractHandler {
         return klassConstructor.newInstance();
     }
 
+    public Handler resolveControllerHandler(final Class controllerClass) {
+        return controllerClass.newInstance();
+    }
+
     public Map handleMatchedRequest(final Map match, final Map request) {
         Handler handler = this.resolveControllerHandler(match.controller);
         return handler.handle(request.plus([match:match]).asImmutable());
