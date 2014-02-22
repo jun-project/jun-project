@@ -12,7 +12,7 @@ import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
 import jun.handler.Handler;
-import jun.adapter.jetty.HandlerWrapper;
+import jun.adapter.jetty.JettyHandlerWrapper;
 
 
 public class JettyAdapter extends jun.adapter.Adapter {
@@ -53,8 +53,8 @@ public class JettyAdapter extends jun.adapter.Adapter {
         this.server.addConnector(httpConnector);
         //server.addConnector(httpsConnector);
 
-        final HandlerWrapper handlerWrapper = new HandlerWrapper(handler);
-        this.server.setHandler(handlerWrapper);
+        final JettyHandlerWrapper jettyHandlerWrapper = new JettyHandlerWrapper(handler);
+        this.server.setHandler(jettyHandlerWrapper);
     }
 
     public void start() {

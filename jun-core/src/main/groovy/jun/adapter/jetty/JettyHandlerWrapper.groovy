@@ -8,15 +8,23 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.eclipse.jetty.server.Request as ServerRequest;
+
+import javax.servlet.AsyncContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+
+import jun.adapter.jetty.JettyWebSocketHandler
+import jun.adapter.jetty.handlers.websocket.WSHandler
 
 import jun.handler.Handler;
 
-public class HandlerWrapper extends AbstractHandler {
+public class JettyHandlerWrapper extends AbstractHandler {
     public final Handler handler;
 
-    public HandlerWrapper(final Handler handler) {
+    public JettyHandlerWrapper(final Handler handler) {
         this.handler = handler;
     }
 
@@ -66,8 +74,6 @@ public class HandlerWrapper extends AbstractHandler {
                 servletResponse: servletResponse];
     }
 
-    // FIXME: At this momment only supports String body
-
     @CompileStatic
     public InputStream makeInputStreamFromBody(final Object body) {
         if (body instanceof String) {
@@ -77,11 +83,8 @@ public class HandlerWrapper extends AbstractHandler {
     }
 
     @CompileStatic
-    public void handle(String target, ServerRequest serverRequest,
-                       HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        final Map request = this.makeRequest(servletRequest, servletResponse);
-        final Map response = this.handler.handle(request);
-
+    public void handleResponse(HttpServletRequest servletRequest, HttpServletResponse servletResponse,
+                               Request serverRequest, Map response) {
         if (response.headers) {
             response.headers.each { Map.Entry entry ->
                 final String key = (String) entry.getKey();
@@ -111,5 +114,31 @@ public class HandlerWrapper extends AbstractHandler {
         output.close();
 
         serverRequest.setHandled(true);
+    }
+
+    @CompileStatic
+    public void handleWebSocketResponse(String target, Request serverRequest, HttpServletRequest servletRequest,
+                                        HttpServletResponse servletResponse, WSHandler wshandler) {
+        def ws = new JettyWebSocketHandler(wshandler)
+        def factory = ws.getWebSocketFactory() 
+
+        ws.configure(factory);
+        factory.init();
+        ws.handle(target, serverRequest, servletRequest, servletResponse);
+    }
+
+    @CompileStatic
+    public void handle(String target, Request serverRequest,
+                       HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        final Map request = this.makeRequest(servletRequest, servletResponse);
+        final Map response = this.handler.handle(request);
+
+        final Object body = response.body;
+
+        if (body instanceof WSHandler) {
+            this.handleWebSocketResponse(target, serverRequest, servletRequest,  servletResponse, (WSHandler) body);
+        } else if (body instanceof String) {
+            this.handleResponse(servletRequest, servletResponse, serverRequest, response);
+        }
     }
 }

@@ -1,1 +1,1 @@
-include 'jun-core', 'jun-app', 'jun-examples/helloApp', 'jun-examples/helloWorld'
+include 'jun-core', 'jun-app', 'jun-examples/helloApp', 'jun-examples/helloWorld', 'jun-examples/helloWebSockets'
