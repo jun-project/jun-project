@@ -1,12 +1,10 @@
-package jun.handler.middleware;
-
-import groovy.transform.CompileStatic;
+package jun.handlers.middleware;
 
 import java.nio.charset.Charset;
 import groovy.transform.InheritConstructors;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import jun.handler.AbstractMiddlewareHandler;
+import jun.handlers.AbstractMiddlewareHandler;
 
 class QueryParamsHandler extends AbstractMiddlewareHandler {
     public Map handle(final Map request) {

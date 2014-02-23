@@ -2,9 +2,9 @@ package jun.app;
 
 import static jun.helpers.MiddlewareHelper.combine;
 
-import jun.handler.middleware.QueryParamsHandler;
-import jun.handler.AbstractHandler;
-import jun.handler.Handler;
+import jun.handlers.middleware.QueryParamsHandler;
+import jun.handlers.AbstractHandler;
+import jun.handlers.Handler;
 
 
 class Application extends AbstractHandler {

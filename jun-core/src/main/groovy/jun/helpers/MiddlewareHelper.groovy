@@ -1,7 +1,7 @@
 package jun.helpers;
 
-import jun.handler.Handler;
-import jun.handler.MiddlewareHandler;
+import jun.handlers.Handler;
+import jun.handlers.MiddlewareHandler;
 
 public class MiddlewareHelper {
     public static Handler combine(final Handler handler, MiddlewareHandler... middlewares) {

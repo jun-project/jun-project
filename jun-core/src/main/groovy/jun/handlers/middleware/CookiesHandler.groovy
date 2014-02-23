@@ -1,4 +1,4 @@
-package jun.handler.middleware;
+package jun.handlers.middleware;
 
 import groovy.transform.CompileStatic;
 
@@ -7,7 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 
-import jun.handler.AbstractMiddlewareHandler;
+import jun.handlers.AbstractMiddlewareHandler;
 
 // NOTE: explicit casting is mandatory because we using
 // CompileStatic transformation and request and response
