@@ -1,10 +1,9 @@
-package jun.controller;
+package jun.handlers;
 
 import static jun.helpers.ResponseHelper.response;
+import jun.handlers.Handler
 
-import jun.handler.AbstractHandler
-
-abstract class Controller extends AbstractHandler {
+abstract class Controller implements Handler {
     def contentType = "text/html";
 
     public Map handle(final Map request) {
@@ -14,7 +13,7 @@ abstract class Controller extends AbstractHandler {
         if (responseCandidate instanceof String) {
             return response(responseCandidate, 200, contentType);
         } else if (responseCandidate instanceof Map) {
-            return responseCandidate;
+            return responseCandidate.asImmutable();
         } else {
             throw RuntimeException("Temporary not supported response");
         }

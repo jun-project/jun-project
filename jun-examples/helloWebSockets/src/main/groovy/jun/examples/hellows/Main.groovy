@@ -1,13 +1,13 @@
 package jun.examples.hellows;
 
+import org.eclipse.jetty.websocket.api.Session
 import static jun.helpers.MiddlewareHelper.combine
 
-import jun.handler.middleware.QueryParamsHandler
-import jun.handler.AbstractHandler
-import org.eclipse.jetty.websocket.api.Session
+import jun.handlers.middleware.QueryParamsHandler
+import jun.handlers.Handler
 
-import jun.app.Application;
-import jun.app.UrlMappings;
+import jun.app.Application
+import jun.app.UrlMappings
 import jun.adapter.jetty.JettyAdapter
 import jun.adapter.jetty.handlers.websocket.WSHandler
 
@@ -28,12 +28,13 @@ class Main {
         }
     }
 
-    static class MyHandler extends AbstractHandler {
+    static class MyHandler implements Handler {
         public Map handle(final Map request) {
             return [body: "Hello World",
                     status: 200]
         }
     }
+
     static def mappings = [
         [name: "home", path: "/", controller: MyHandler, action: "home"],
         [name: "ws", path: "/ws", controller: MyWsHandler],

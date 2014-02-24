@@ -1,14 +1,14 @@
-package jun.app;
+package jun.handlers;
 
 import static jun.helpers.ResponseHelper.response;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-import jun.handler.Handler;
-import jun.handler.AbstractHandler;
+import jun.handlers.Handler;
 
-class UrlMappings extends AbstractHandler {
+
+class UrlMappings implements Handler {
     final List urls;
     final Map urlsByName;
 

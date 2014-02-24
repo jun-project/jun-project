@@ -1,6 +1,6 @@
 package jun.examples.helloapp;
 
-import jun.controller.Controller;
+import jun.handlers.Controller;
 
 
 class ExampleController extends Controller {

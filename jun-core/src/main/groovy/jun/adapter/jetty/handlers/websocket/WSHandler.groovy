@@ -1,9 +1,9 @@
 package jun.adapter.jetty.handlers.websocket;
 
 import org.eclipse.jetty.websocket.api.Session
-import jun.handler.AbstractHandler
+import jun.handlers.Handler
 
-public abstract class WSHandler extends AbstractHandler {
+public abstract class WSHandler implements Handler {
     abstract public void onConnect(Session session);
     abstract public void onError(Throwable exception);
     abstract public void onMessage(String message);

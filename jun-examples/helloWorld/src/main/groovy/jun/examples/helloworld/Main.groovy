@@ -1,26 +1,24 @@
 package jun.examples.helloworld;
 
+import static jun.helpers.ResponseHelper.response;
 import static jun.helpers.MiddlewareHelper.combine;
 
-import jun.handler.middleware.QueryParamsHandler;
-import jun.handler.AbstractHandler;
+import jun.middleware.QueryParamsMiddleware;
+import jun.handlers.Handler;
 
 import jun.adapter.jetty.JettyAdapter;
 
 
 class Main {
-    static class HelloWorldHandler extends AbstractHandler {
+    static class HelloWorldHandler implements Handler {
         public Map handle(final Map request) {
-            return [body: "<strong>Hóñá ääåéëþüúí</strong>",
-                    status: 200,
-                    contentType: "text/html",
-                    headers: ["X-KK": "2"]];
+            return response("<strong>Hóñá ääåéëþüúí</strong>", 200, "text/html");
         }
     }
 
     public static void main(String[] args) {
         def handler = combine(new HelloWorldHandler(),
-                              new QueryParamsHandler());
+                              new QueryParamsMiddleware());
 
         def server = new JettyAdapter(handler, [port: 8080]);
         server.start();
