@@ -1,7 +1,7 @@
 package jun.adapter;
 
 import jun.util.Lifecycle
-import jun.handler.Handler;
+import jun.handlers.Handler;
 
 public abstract class Adapter implements Lifecycle {
     public final Map options;

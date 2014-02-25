@@ -19,7 +19,7 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import jun.adapter.jetty.JettyWebSocketHandler
 import jun.adapter.jetty.handlers.websocket.WSHandler
 
-import jun.handler.Handler;
+import jun.handlers.Handler;
 
 public class JettyHandlerWrapper extends AbstractHandler {
     public final Handler handler;

@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.HttpConfiguration;
 
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-import jun.handler.Handler;
+import jun.handlers.Handler;
 import jun.adapter.jetty.JettyHandlerWrapper;
 
 
